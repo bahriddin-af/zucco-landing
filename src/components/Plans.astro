@@ -1,0 +1,81 @@
+---
+import { SITE } from '@/config/site'
+import { PLAN_PRICES, formatPrice } from '@/config/pricing'
+import { getMessages, type Locale } from '@/i18n/locales'
+
+interface Props {
+  locale: Locale
+}
+
+const { locale } = Astro.props
+const t = getMessages(locale).plans
+const paidPlans = [
+  { key: 'start', moon: 'moon-cres', plan: t.start, leadIn: undefined, prices: PLAN_PRICES.start, popular: false },
+  { key: 'business', moon: 'moon-half', plan: t.business, leadIn: t.business.leadIn, prices: PLAN_PRICES.business, popular: true },
+] as const
+---
+
+<section id="narxlar">
+  <div class="wrap">
+    <div class="plans-head">
+      <h2>{t.title}</h2>
+      <div class="toggle" role="group" aria-label={t.billing} data-period-monthly={t.periodMonthly} data-period-yearly={t.periodYearly}>
+        <button type="button" data-billing="monthly" aria-pressed="true">{t.monthly}</button>
+        <button type="button" data-billing="yearly" aria-pressed="false">{t.yearly} · <span class="save">{t.yearlySave}</span></button>
+      </div>
+    </div>
+    <div class="plans">
+      {paidPlans.map(({ moon, plan, leadIn, prices, popular }) => (
+        <article class:list={['plan', { pop: popular }]}>
+          <div class="top">
+            <svg class="moon" aria-hidden="true"><use href={`#${moon}`}></use></svg>
+            {popular && <span class="badge">{t.popular}</span>}
+            <h3>{plan.name}</h3>
+            <span class="for">{plan.audience}</span>
+            <div class="price">
+              <b data-monthly={formatPrice(prices.monthly, locale)} data-yearly={formatPrice(prices.yearly, locale)}>{formatPrice(prices.monthly, locale)}</b>
+              <span>{t.perMonth}<br /><span class="period">{t.periodMonthly}</span></span>
+            </div>
+            <a class="btn" href="#demo">{plan.cta}</a>
+            <p class="fine">{t.fine}</p>
+          </div>
+          <ul>
+            {leadIn && <li class="lead-in">{leadIn}</li>}
+            {plan.items.map((item) => <li><svg aria-hidden="true"><use href="#check"></use></svg>{item}</li>)}
+          </ul>
+        </article>
+      ))}
+      <article class="plan">
+        <div class="top">
+          <svg class="moon" aria-hidden="true"><use href="#moon-full"></use></svg>
+          <h3>{t.enterprise.name}</h3>
+          <span class="for">{t.enterprise.audience}</span>
+          <div class="price"><b>{t.enterprise.price}</b><span>{t.enterprise.priceNote[0]}<br />{t.enterprise.priceNote[1]}</span></div>
+          <a class="btn" href={SITE.phone.href}>{t.enterprise.cta}</a>
+          <p class="fine">{t.enterprise.fine}</p>
+        </div>
+        <ul>
+          <li class="lead-in">{t.enterprise.leadIn}</li>
+          {t.enterprise.items.map((item) => <li><svg aria-hidden="true"><use href="#check"></use></svg>{item}</li>)}
+        </ul>
+      </article>
+    </div>
+    <p class="plans-note">{t.note}</p>
+  </div>
+</section>
+
+<script>
+  const toggle = document.querySelector<HTMLElement>('.toggle[data-period-monthly]')
+  if (toggle) {
+    const buttons = toggle.querySelectorAll<HTMLButtonElement>('button[data-billing]')
+    const setBilling = (yearly: boolean) => {
+      buttons.forEach((button) => button.setAttribute('aria-pressed', String((button.dataset.billing === 'yearly') === yearly)))
+      document.querySelectorAll<HTMLElement>('.price b[data-monthly]').forEach((price) => {
+        price.textContent = (yearly ? price.dataset.yearly : price.dataset.monthly) ?? ''
+      })
+      const period = (yearly ? toggle.dataset.periodYearly : toggle.dataset.periodMonthly) ?? ''
+      document.querySelectorAll('.period').forEach((label) => (label.textContent = period))
+    }
+    buttons.forEach((button) => button.addEventListener('click', () => setBilling(button.dataset.billing === 'yearly')))
+  }
+</script>

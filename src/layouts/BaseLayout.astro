@@ -1,0 +1,43 @@
+---
+import '@/styles/global.css'
+import { SITE } from '@/config/site'
+import { LOCALES, LOCALE_META, DEFAULT_LOCALE, getMessages, localePath, type Locale } from '@/i18n/locales'
+
+interface Props {
+  locale: Locale
+}
+
+const { locale } = Astro.props
+const t = getMessages(locale)
+const meta = LOCALE_META[locale]
+const canonical = new URL(localePath(locale), SITE.url).href
+---
+
+<!doctype html>
+<html lang={meta.htmlLang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{t.meta.title}</title>
+    <meta name="description" content={t.meta.description} />
+    <meta name="theme-color" content="#F1F6FB" />
+    <link rel="canonical" href={canonical} />
+    {LOCALES.map((code) => <link rel="alternate" hreflang={LOCALE_META[code].htmlLang} href={new URL(localePath(code), SITE.url).href} />)}
+    <link rel="alternate" hreflang="x-default" href={new URL(localePath(DEFAULT_LOCALE), SITE.url).href} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Zucco CRM" />
+    <meta property="og:title" content={t.meta.title} />
+    <meta property="og:description" content={t.meta.description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={meta.ogLocale} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

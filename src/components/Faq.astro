@@ -1,0 +1,23 @@
+---
+import { getMessages, type Locale } from '@/i18n/locales'
+
+interface Props {
+  locale: Locale
+}
+
+const t = getMessages(Astro.props.locale).faq
+---
+
+<section id="savollar">
+  <div class="wrap">
+    <h2>{t.title}</h2>
+    <div class="faq">
+      {t.items.map((item) => (
+        <details>
+          <summary>{item.q}<svg aria-hidden="true"><use href="#chev"></use></svg></summary>
+          <p>{item.a}</p>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,74 @@
+---
+import { getMessages, type Locale } from '@/i18n/locales'
+
+interface Props {
+  locale: Locale
+}
+
+const t = getMessages(Astro.props.locale).features
+// Kartalardagi namuna ismlar va grafik balandliklari (foiz).
+const LEAD_NAMES = ['Dilnoza R.', 'Jasur K.', 'Bekzod U.']
+const ATTENDANCE_ROWS = [
+  { name: 'Madina Karimova', status: 0 },
+  { name: 'Aziz Toshmatov', status: 1 },
+]
+const BAR_HEIGHTS = [40, 55, 48, 70, 62, 88]
+---
+
+<section id="imkoniyatlar">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>{t.title}</h2>
+      <p>{t.subtitle}</p>
+    </div>
+    <div class="cards">
+      <article class="card">
+        <span class="tag t-blue">{t.leads.tag}</span>
+        <h3>{t.leads.title}</h3>
+        <p>{t.leads.text}</p>
+        <div class="illu" aria-hidden="true">
+          <div class="kan">{t.leads.stages.map((stage, index) => <div><b>{stage}</b>{LEAD_NAMES[index]}</div>)}</div>
+        </div>
+      </article>
+      <article class="card">
+        <span class="tag t-green">{t.attendance.tag}</span>
+        <h3>{t.attendance.title}</h3>
+        <p>{t.attendance.text}</p>
+        <div class="illu" aria-hidden="true">
+          {ATTENDANCE_ROWS.map((row) => (
+            <div class="att">
+              <span>{row.name}</span>
+              <span class="chips">{t.attendance.statuses.map((status, index) => <i class={index === row.status ? 'on' : undefined}>{status}</i>)}</span>
+            </div>
+          ))}
+        </div>
+      </article>
+      <article class="card">
+        <span class="tag t-amber">{t.finance.tag}</span>
+        <h3>{t.finance.title}</h3>
+        <p>{t.finance.text}</p>
+        <div class="illu" aria-hidden="true">
+          <div class="bars">{BAR_HEIGHTS.map((height) => <i style={`height:${height}%`}></i>)}</div>
+        </div>
+      </article>
+      <article class="card">
+        <span class="tag t-violet">{t.schedule.tag}</span>
+        <h3>{t.schedule.title}</h3>
+        <p>{t.schedule.text}</p>
+      </article>
+      <article class="card">
+        <span class="tag t-rose">{t.gamification.tag}</span>
+        <h3>{t.gamification.title}</h3>
+        <p>{t.gamification.text}</p>
+        <div class="illu" aria-hidden="true">
+          <div class="coins">{t.gamification.coins.map((coin) => <span>{coin}</span>)}</div>
+        </div>
+      </article>
+      <article class="card">
+        <span class="tag t-green">{t.payroll.tag}</span>
+        <h3>{t.payroll.title}</h3>
+        <p>{t.payroll.text}</p>
+      </article>
+    </div>
+  </div>
+</section>

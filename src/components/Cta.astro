@@ -1,0 +1,117 @@
+---
+import { LEAD_ENDPOINT, PHONE_RULES, SITE } from '@/config/site'
+import { getMessages, type Locale } from '@/i18n/locales'
+
+interface Props {
+  locale: Locale
+}
+
+const { locale } = Astro.props
+const t = getMessages(locale).cta
+// Skriptga kerakli matn va sozlamalar data-* orqali beriladi (skript bitta, til sahifaga qarab o'zgaradi).
+const config = {
+  endpoint: LEAD_ENDPOINT,
+  locale,
+  phone: SITE.phone.display,
+  phoneRules: PHONE_RULES,
+  text: {
+    sending: t.sending,
+    success: t.success,
+    errorName: t.errorName,
+    errorPhone: t.errorPhone,
+    errorSend: t.errorSend,
+    offline: t.offline,
+  },
+}
+---
+
+<div class="wrap">
+  <div class="cta" id="demo">
+    <div>
+      <h2>{t.title}</h2>
+      <p>{t.text}</p>
+    </div>
+    <form id="demo-form" novalidate data-config={JSON.stringify(config)}>
+      <label class="sr-only" for="f-name">{t.name}</label>
+      <input id="f-name" name="name" autocomplete="name" placeholder={t.name} maxlength="100" />
+      <label class="sr-only" for="f-phone">{t.phone}</label>
+      <input id="f-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+998 90 123 45 67" maxlength="20" />
+      <button class="btn btn-light" type="submit">{t.submit}</button>
+      <p class="msg" id="f-msg" role="status" hidden></p>
+    </form>
+  </div>
+</div>
+
+<script>
+  interface LeadFormConfig {
+    endpoint: string
+    locale: string
+    phone: string
+    phoneRules: { countryCode: string; fullLength: number; localLength: number }
+    text: Record<'sending' | 'success' | 'errorName' | 'errorPhone' | 'errorSend' | 'offline', string>
+  }
+
+  const form = document.getElementById('demo-form') as HTMLFormElement | null
+  const message = document.getElementById('f-msg')
+  const nameInput = document.getElementById('f-name') as HTMLInputElement | null
+  const phoneInput = document.getElementById('f-phone') as HTMLInputElement | null
+
+  if (form && message && nameInput && phoneInput) {
+    const config = JSON.parse(form.dataset.config ?? '{}') as LeadFormConfig
+    const submitButton = form.querySelector<HTMLButtonElement>('button[type="submit"]')
+    const fill = (template: string, values: Record<string, string>) =>
+      template.replace(/\{(\w+)\}/g, (_, key: string) => values[key] ?? '')
+
+    const show = (text: string, isError: boolean) => {
+      message.hidden = false
+      message.className = isError ? 'msg err' : 'msg'
+      message.textContent = text
+    }
+
+    /** +998 90 123 45 67 / 901234567 → "998901234567"; noto'g'ri bo'lsa null. */
+    const normalizePhone = (raw: string): string | null => {
+      const digits = raw.replace(/\D/g, '')
+      const { countryCode, fullLength, localLength } = config.phoneRules
+      if (digits.length === fullLength && digits.startsWith(countryCode)) return digits
+      if (digits.length === localLength) return countryCode + digits
+      return null
+    }
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault()
+      const name = nameInput.value.trim()
+      const phone = normalizePhone(phoneInput.value)
+      if (!name) {
+        show(config.text.errorName, true)
+        nameInput.focus()
+        return
+      }
+      if (!phone) {
+        show(config.text.errorPhone, true)
+        phoneInput.focus()
+        return
+      }
+      if (!config.endpoint) {
+        show(fill(config.text.offline, { phone: config.phone }), true)
+        return
+      }
+
+      if (submitButton) submitButton.disabled = true
+      show(config.text.sending, false)
+      try {
+        const response = await fetch(config.endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, phone: `+${phone}`, language: config.locale, source: 'landing' }),
+        })
+        if (!response.ok) throw new Error(`HTTP ${response.status}`)
+        show(fill(config.text.success, { name }), false)
+        ;[nameInput, phoneInput, submitButton].forEach((element) => element && (element.hidden = true))
+      } catch {
+        show(fill(config.text.errorSend, { phone: config.phone }), true)
+      } finally {
+        if (submitButton) submitButton.disabled = false
+      }
+    })
+  }
+</script>

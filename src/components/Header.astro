@@ -1,0 +1,66 @@
+---
+import { SITE } from '@/config/site'
+import { LOCALES, LOCALE_META, getMessages, localePath, type Locale } from '@/i18n/locales'
+
+interface Props {
+  locale: Locale
+}
+
+const { locale } = Astro.props
+const t = getMessages(locale)
+const links = [
+  { href: '#imkoniyatlar', label: t.nav.features },
+  { href: '#narxlar', label: t.nav.pricing },
+  { href: '#yordam', label: t.nav.support },
+  { href: '#savollar', label: t.nav.faq },
+]
+---
+
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="#top"><svg class="mark" aria-hidden="true"><use href="#zmark"></use></svg>ZUCCO</a>
+    <nav class="links" aria-label={t.nav.sections}>
+      {links.map((link) => <a href={link.href}>{link.label}</a>)}
+    </nav>
+    <div class="right">
+      <a class="phone" href={SITE.phone.href}><svg aria-hidden="true"><use href="#phone"></use></svg>{SITE.phone.display}</a>
+      <select class="lang" aria-label={t.nav.language} data-lang-switch>
+        {LOCALES.map((code) => <option value={localePath(code)} selected={code === locale}>{LOCALE_META[code].short}</option>)}
+      </select>
+      <a class="btn btn-primary" href="#demo">{t.nav.consult}</a>
+    </div>
+    <div class="nav-mobile-tools">
+      <select class="lang" aria-label={t.nav.language} data-lang-switch>
+        {LOCALES.map((code) => <option value={localePath(code)} selected={code === locale}>{LOCALE_META[code].short}</option>)}
+      </select>
+      <button class="menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="mobile" aria-label={t.nav.menu}>
+        <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 6h14M3 10h14M3 14h14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg>
+      </button>
+    </div>
+  </div>
+  <div class="wrap mobile" id="mobile">
+    {links.map((link) => <a href={link.href}>{link.label}</a>)}
+    <a href={SITE.phone.href}>{SITE.phone.display}</a>
+    <a class="btn btn-primary" href="#demo">{t.nav.consult}</a>
+  </div>
+</header>
+
+<script>
+  const menuBtn = document.getElementById('menu-btn')
+  const mobile = document.getElementById('mobile')
+  if (menuBtn && mobile) {
+    const setOpen = (open: boolean) => {
+      mobile.classList.toggle('open', open)
+      menuBtn.setAttribute('aria-expanded', String(open))
+    }
+    menuBtn.addEventListener('click', () => setOpen(!mobile.classList.contains('open')))
+    mobile.addEventListener('click', (event) => {
+      if (event.target instanceof Element && event.target.closest('a')) setOpen(false)
+    })
+  }
+
+  // Til tanlanganda shu tildagi sahifaga o'tiladi (har bir tilning alohida manzili bor — SEO uchun).
+  document.querySelectorAll<HTMLSelectElement>('[data-lang-switch]').forEach((select) => {
+    select.addEventListener('change', () => window.location.assign(select.value + window.location.hash))
+  })
+</script>
