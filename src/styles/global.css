@@ -295,3 +295,6 @@ a.store:hover { border-color: #3FC79A; }
 .f-docs { display: flex; flex-wrap: wrap; gap: 8px 20px; font-size: 13px; }
 .f-docs a { color: var(--f-muted); }
 .f-docs a:hover { color: var(--f-ink); }
+.cta .note { margin: 0; }
+.cta .note a { color: inherit; }
+.hp { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }

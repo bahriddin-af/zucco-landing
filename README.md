@@ -41,10 +41,17 @@ Havolasi `null` bo'lgan ijtimoiy tarmoq yoki ilova do'koni sahifada "tez orada" 
 Forma arizani `PUBLIC_LEAD_ENDPOINT` manziliga `POST` qiladi:
 
 ```json
-{ "name": "Ali", "phone": "+998901234567", "language": "uz", "source": "landing" }
+{ "name": "Ali", "phone": "+998901234567", "language": "uz", "source": "landing", "website": "" }
 ```
 
+`website` — ko'rinmas honeypot maydon: odam uni to'ldirmaydi, bot to'ldirsa backend arizani saqlamaydi.
+Backend manzili — `POST /api/public/leads`; `zucco.uz` backend CORS ro'yxatida (`ALLOWED_ORIGINS`) bo'lishi kerak.
+
+Javoblar: `2xx` — muvaffaqiyat; `400` — ma'lumot noto'g'ri; `429` — juda ko'p urinish; `503` — qabul o'chiq;
+tarmoq xatosi alohida. Har biri uchun 4 tilda alohida xabar va sotuv bo'limi raqami ko'rsatiladi.
+
 `.env.example` dan `.env` yarating. O'zgaruvchi bo'sh bo'lsa, forma ariza yubormaydi va mijozga sotuv bo'limi raqamini ko'rsatadi.
+Forma ostidagi rozilik matni maxfiylik siyosati sahifasiga (`/privacy/`) olib boradi.
 
 ## Deploy
 

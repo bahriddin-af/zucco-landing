@@ -180,6 +180,12 @@ export const uz = {
     errorPhone: "Telefon raqamini to'liq kiriting.",
     errorSend: "Ariza yuborilmadi. Qayta urinib ko'ring yoki qo'ng'iroq qiling: {phone}",
     offline: "Hozircha onlayn ariza qabul qilinmayapti. Qo'ng'iroq qiling: {phone}",
+    errorValidation: "Ma'lumotlar qabul qilinmadi. Ism va telefon raqamini tekshirib, qayta yuboring.",
+    errorRateLimit: "Juda ko'p urinish bo'ldi. Birozdan so'ng qayta urinib ko'ring yoki qo'ng'iroq qiling: {phone}",
+    errorNetwork: "Internet aloqasi yo'q. Ulanishni tekshirib, qayta urinib ko'ring yoki qo'ng'iroq qiling: {phone}",
+    consentBefore: 'Arizani yuborish orqali siz ',
+    consentLink: 'maxfiylik siyosati',
+    consentAfter: 'ga rozilik bildirasiz.',
   },
   footer: {
     tagline: "O'quv markazlari uchun zamonaviy boshqaruv tizimi",

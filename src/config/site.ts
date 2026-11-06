@@ -42,6 +42,8 @@ export const SECTIONS = {
   demo: 'demo',
 } as const
 
+import type { LegalPage } from './pages'
+
 export { LEGAL_PAGES, PENDING_LEGAL_PAGES, type LegalPage } from './pages'
 
 export type SectionId = (typeof SECTIONS)[keyof typeof SECTIONS]
@@ -65,12 +67,23 @@ export const FONTS = {
   stylesheet: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap',
 } as const
 
-/** Konsultatsiya formasi: maydon uzunliklari va ariza manbasi. */
+/** Konsultatsiya formasi: maydon uzunliklari, ariza manbasi va himoya sozlamalari. */
 export const LEAD_FORM = {
   nameMaxLength: 100,
   phoneMaxLength: 20,
   phonePlaceholder: '+998 90 123 45 67',
   source: 'landing',
+  /** Botlar uchun yashirin maydon nomi — backend shu maydon to'ldirilgan arizani saqlamaydi. */
+  honeypotField: 'website',
+  /** Rozilik matnidagi havola ochadigan sahifa. */
+  consentPage: 'privacy' satisfies LegalPage,
+} as const
+
+/** Ariza endpointi qaytaradigan, alohida xabar ko'rsatiladigan HTTP holatlari. */
+export const LEAD_HTTP_STATUS = {
+  badRequest: 400,
+  tooManyRequests: 429,
+  unavailable: 503,
 } as const
 
 /** Konsultatsiya arizasi yuboriladigan manzil (.env: PUBLIC_LEAD_ENDPOINT). Bo'sh bo'lsa forma o'chiq. */

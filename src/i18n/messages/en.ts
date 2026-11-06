@@ -171,6 +171,12 @@ export const en: Messages = {
     errorPhone: 'Please enter your full phone number.',
     errorSend: "Your request wasn't sent. Try again or call us: {phone}",
     offline: "We aren't accepting online requests yet. Please call: {phone}",
+    errorValidation: 'Your details were not accepted. Check your name and phone number and try again.',
+    errorRateLimit: 'Too many attempts. Please try again shortly or call us: {phone}',
+    errorNetwork: 'No internet connection. Check your connection and try again, or call us: {phone}',
+    consentBefore: 'By submitting, you agree to our ',
+    consentLink: 'privacy policy',
+    consentAfter: '.',
   },
   footer: {
     tagline: 'A modern management system for learning centers',
