@@ -5,7 +5,7 @@
 export const SITE = {
   name: 'Zucco CRM',
   /** Brauzer tab'ida ko'rinadigan nom (favicon yonida). Uzun sarlavha og:title va description'da. */
-  tabTitle: 'Zucco',
+  tabTitle: 'ZUCCO',
   url: 'https://zucco.uz',
   appUrl: 'https://app.zucco.uz',
   phone: {
