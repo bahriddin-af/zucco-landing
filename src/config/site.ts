@@ -108,6 +108,27 @@ export const LEAD_HTTP_STATUS = {
 /** Konsultatsiya arizasi yuboriladigan manzil (.env: PUBLIC_LEAD_ENDPOINT). Bo'sh bo'lsa forma o'chiq. */
 export const LEAD_ENDPOINT: string = import.meta.env.PUBLIC_LEAD_ENDPOINT ?? ''
 
+/**
+ * "website-id=abc;domain=zucco.uz" → { "website-id": "abc", domain: "zucco.uz" }.
+ * Kalit faqat harf, raqam va chiziqchadan iborat bo'lishi mumkin; noto'g'ri juftliklar tashlab yuboriladi.
+ */
+const parseDataAttributes = (raw: string): Record<string, string> =>
+  Object.fromEntries(
+    raw
+      .split(';')
+      .map((pair) => pair.split('=').map((part) => part.trim()))
+      .filter((parts): parts is [string, string] => parts.length === 2 && /^[a-z0-9-]+$/i.test(parts[0]) && parts[1] !== ''),
+  )
+
+/**
+ * Analitika (ixtiyoriy, .env): PUBLIC_ANALYTICS_SRC — skript manzili, PUBLIC_ANALYTICS_DATA — data-* atributlar.
+ * SRC bo'sh bo'lsa skript umuman yuklanmaydi. Provayder tanlash — biznes qarori.
+ */
+export const ANALYTICS = {
+  src: (import.meta.env.PUBLIC_ANALYTICS_SRC ?? '') as string,
+  data: parseDataAttributes(import.meta.env.PUBLIC_ANALYTICS_DATA ?? ''),
+} as const
+
 /** Telefon raqami tekshiruvi: +998XXXXXXXXX yoki 9 xonali mahalliy raqam. */
 export const PHONE_RULES = {
   countryCode: '998',

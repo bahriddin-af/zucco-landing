@@ -1,5 +1,6 @@
 ---
 import '@/styles/global.css'
+import Analytics from '@/components/Analytics.astro'
 import { FONTS, ICONS, OG_IMAGE, SITE, THEME_COLOR } from '@/config/site'
 import { LOCALES, LOCALE_META, DEFAULT_LOCALE, getMessages, localePath, type Locale } from '@/i18n/locales'
 
@@ -61,6 +62,7 @@ const ogImageUrl = new URL(OG_IMAGE.path, SITE.url).href
 
     {FONTS.preconnect.map((link) => <link rel="preconnect" href={link.href} crossorigin={link.crossorigin ? "anonymous" : undefined} />)}
     <link rel="stylesheet" href={FONTS.stylesheet} />
+    <Analytics />
   </head>
   <body>
     <slot />

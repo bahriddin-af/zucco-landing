@@ -21,6 +21,9 @@ jobs:
     env:
       # Repo Settings → Variables: PUBLIC_LEAD_ENDPOINT (bo'sh bo'lsa forma telefon raqamini ko'rsatadi).
       PUBLIC_LEAD_ENDPOINT: ${{ vars.PUBLIC_LEAD_ENDPOINT }}
+      # Ixtiyoriy analitika (bo'sh bo'lsa skript yuklanmaydi).
+      PUBLIC_ANALYTICS_SRC: ${{ vars.PUBLIC_ANALYTICS_SRC }}
+      PUBLIC_ANALYTICS_DATA: ${{ vars.PUBLIC_ANALYTICS_DATA }}
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4

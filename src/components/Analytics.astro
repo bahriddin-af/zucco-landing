@@ -1,0 +1,9 @@
+---
+import { ANALYTICS } from '@/config/site'
+
+// Provayderga bog'lanmagan: `<script defer src=... data-*>` ko'rinishidagi istalgan xizmat
+// (Umami, Plausible va h.k.). PUBLIC_ANALYTICS_SRC bo'sh bo'lsa hech narsa chiqmaydi.
+const dataAttributes = Object.fromEntries(Object.entries(ANALYTICS.data).map(([key, value]) => [`data-${key}`, value]))
+---
+
+{ANALYTICS.src && <script is:inline defer src={ANALYTICS.src} {...dataAttributes}></script>}

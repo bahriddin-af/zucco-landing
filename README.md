@@ -58,3 +58,9 @@ Forma ostidagi rozilik matni maxfiylik siyosati sahifasiga (`/privacy/`) olib bo
 ## Deploy
 
 `pnpm build` dan keyin `dist/` papkasini istalgan statik hostingga (nginx, Cloudflare Pages, Vercel) joylash kifoya.
+
+## Analitika (ixtiyoriy)
+
+`PUBLIC_ANALYTICS_SRC` (skript manzili) va `PUBLIC_ANALYTICS_DATA` (`kalit=qiymat;...` → `data-*` atributlar).
+`<script defer src=... data-*>` bilan ulanadigan istalgan xizmat ishlaydi (Umami, Plausible va h.k.).
+`PUBLIC_ANALYTICS_SRC` bo'sh bo'lsa, hech qanday skript yuklanmaydi. Provayder hali tanlanmagan.
