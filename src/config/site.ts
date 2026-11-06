@@ -101,6 +101,8 @@ export const LEAD_FORM = {
 /** Ariza endpointi qaytaradigan, alohida xabar ko'rsatiladigan HTTP holatlari. */
 export const LEAD_HTTP_STATUS = {
   badRequest: 400,
+  /** Backend maydon validatsiyasi (`invalid_field`) uchun 422 qaytaradi. */
+  unprocessable: 422,
   tooManyRequests: 429,
   unavailable: 503,
 } as const

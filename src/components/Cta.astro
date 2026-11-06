@@ -73,7 +73,7 @@ const config = {
     phone: string
     phoneRules: { countryCode: string; fullLength: number; localLength: number }
     source: string
-    status: { badRequest: number; tooManyRequests: number; unavailable: number }
+    status: { badRequest: number; unprocessable: number; tooManyRequests: number; unavailable: number }
     text: Record<LeadText, string>
   }
 
@@ -113,7 +113,7 @@ const config = {
 
     /** Server javobi holatiga mos xabar. */
     const errorFor = (status: number): LeadText => {
-      if (status === config.status.badRequest) return 'errorValidation'
+      if (status === config.status.badRequest || status === config.status.unprocessable) return 'errorValidation'
       if (status === config.status.tooManyRequests) return 'errorRateLimit'
       if (status === config.status.unavailable) return 'offline'
       return 'errorSend'
