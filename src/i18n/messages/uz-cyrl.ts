@@ -5,6 +5,7 @@ export const uzCyrl: Messages = {
     title: 'Zucco CRM — ўқув марказлари учун бошқарув тизими',
     description:
       'Zucco CRM — ўқув марказлари учун лидлар, гуруҳлар, давомат, тўловлар ва ҳисоботларни битта тизимда бошқариш.',
+    ogImageAlt: 'ZUCCO логотипи — Zucco CRM, zucco.uz',
   },
   nav: {
     sections: 'Бўлимлар',

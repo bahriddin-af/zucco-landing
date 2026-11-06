@@ -33,6 +33,8 @@ Matnlar `src/i18n/messages/*.ts` da. `uz.ts` asosiy fayl: boshqa tillar uning tu
 | Tarif narxlari | `src/config/pricing.ts` |
 | Ranglar va uslublar | `src/styles/global.css` |
 | Bo'limlar | `src/components/*.astro` |
+| Favicon PNG, apple-touch-icon, og:image | `node scripts/generate-images.mjs` (logotip `public/favicon.svg`, ranglar `global.css` dan) |
+| Yuridik sahifalar (privacy, offer) | `src/config/pages.ts`, matnlar `src/i18n/messages/*.ts` → `legal` |
 
 Havolasi `null` bo'lgan ijtimoiy tarmoq yoki ilova do'koni sahifada "tez orada" bo'lib chiqadi.
 

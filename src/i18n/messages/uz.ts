@@ -8,6 +8,7 @@ export const uz = {
     title: "Zucco CRM — o'quv markazlari uchun boshqaruv tizimi",
     description:
       "Zucco CRM — o'quv markazlari uchun lidlar, guruhlar, davomat, to'lovlar va hisobotlarni bitta tizimda boshqarish.",
+    ogImageAlt: 'ZUCCO logotipi — Zucco CRM, zucco.uz',
   },
   nav: {
     sections: "Bo'limlar",

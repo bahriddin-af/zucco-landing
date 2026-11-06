@@ -58,6 +58,25 @@ export const SITE_HOST = new URL(SITE.url).host
  */
 export const THEME_COLOR = '#F1F6FB'
 
+/** Ikonkalar va manifest (public/ dagi PNG'lar `node scripts/generate-images.mjs` bilan yaratiladi). */
+export const ICONS = {
+  svg: '/favicon.svg',
+  png32: '/favicon-32.png',
+  appleTouch: '/apple-touch-icon.png',
+  manifest: '/site.webmanifest',
+  manifestIcons: [
+    { src: '/icon-192.png', size: 192 },
+    { src: '/icon-512.png', size: 512 },
+  ],
+} as const
+
+/** Ijtimoiy tarmoqlarda ulashilganda chiqadigan rasm (og:image / twitter:image). */
+export const OG_IMAGE = {
+  path: '/og-image.png',
+  width: 1200,
+  height: 630,
+} as const
+
 /** Google Fonts: shrift va preconnect manzillari. */
 export const FONTS = {
   preconnect: [

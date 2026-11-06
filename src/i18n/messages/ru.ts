@@ -5,6 +5,7 @@ export const ru: Messages = {
     title: 'Zucco CRM — система управления для учебных центров',
     description:
       'Zucco CRM — лиды, группы, посещаемость, оплаты и отчёты учебного центра в одной системе.',
+    ogImageAlt: 'Логотип ZUCCO — Zucco CRM, zucco.uz',
   },
   nav: {
     sections: 'Разделы',

@@ -1,6 +1,6 @@
 ---
 import '@/styles/global.css'
-import { FONTS, SITE, THEME_COLOR } from '@/config/site'
+import { FONTS, ICONS, OG_IMAGE, SITE, THEME_COLOR } from '@/config/site'
 import { LOCALES, LOCALE_META, DEFAULT_LOCALE, getMessages, localePath, type Locale } from '@/i18n/locales'
 
 interface Props {
@@ -21,6 +21,7 @@ const canonical = new URL(localePath(locale, page), SITE.url).href
 const tabTitle = title ? `${title} — ${SITE.tabTitle}` : SITE.tabTitle
 const ogTitle = title ?? t.meta.title
 const metaDescription = description ?? t.meta.description
+const ogImageUrl = new URL(OG_IMAGE.path, SITE.url).href
 ---
 
 <!doctype html>
@@ -35,7 +36,10 @@ const metaDescription = description ?? t.meta.description
     <link rel="canonical" href={canonical} />
     {LOCALES.map((code) => <link rel="alternate" hreflang={LOCALE_META[code].htmlLang} href={new URL(localePath(code, page), SITE.url).href} />)}
     <link rel="alternate" hreflang="x-default" href={new URL(localePath(DEFAULT_LOCALE, page), SITE.url).href} />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href={ICONS.svg} />
+    <link rel="icon" type="image/png" sizes="32x32" href={ICONS.png32} />
+    <link rel="apple-touch-icon" href={ICONS.appleTouch} />
+    <link rel="manifest" href={ICONS.manifest} />
 
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={SITE.name} />
@@ -43,6 +47,15 @@ const metaDescription = description ?? t.meta.description
     <meta property="og:description" content={metaDescription} />
     <meta property="og:url" content={canonical} />
     <meta property="og:locale" content={meta.ogLocale} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content={String(OG_IMAGE.width)} />
+    <meta property="og:image:height" content={String(OG_IMAGE.height)} />
+    <meta property="og:image:alt" content={t.meta.ogImageAlt} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={ogTitle} />
+    <meta name="twitter:description" content={metaDescription} />
+    <meta name="twitter:image" content={ogImageUrl} />
+    <meta name="twitter:image:alt" content={t.meta.ogImageAlt} />
 
     {FONTS.preconnect.map((link) => <link rel="preconnect" href={link.href} crossorigin={link.crossorigin ? "anonymous" : undefined} />)}
     <link rel="stylesheet" href={FONTS.stylesheet} />
