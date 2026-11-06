@@ -25,8 +25,24 @@ export const SITE = {
     googlePlay: null as string | null,
     appStore: null as string | null,
   },
-  copyrightYear: 2026,
+  /** Build vaqtidagi yil — har yili qo'lda yangilash shart emas. */
+  copyrightYear: new Date().getFullYear(),
 } as const
+
+/**
+ * Bo'lim anchorlari (`id`). Barcha tillarda bir xil; Header, Footer va bo'lim komponentlari
+ * faqat shu yerdan oladi.
+ */
+export const SECTIONS = {
+  top: 'top',
+  features: 'features',
+  support: 'support',
+  pricing: 'pricing',
+  faq: 'faq',
+  demo: 'demo',
+} as const
+
+export type SectionId = (typeof SECTIONS)[keyof typeof SECTIONS]
 
 /** Saytda ko'rinadigan domen (zucco.uz) — SITE.url dan olinadi. */
 export const SITE_HOST = new URL(SITE.url).host

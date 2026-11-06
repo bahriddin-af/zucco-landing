@@ -3,6 +3,7 @@ import { ru } from './messages/ru'
 import { uz } from './messages/uz'
 import { uzCyrl } from './messages/uz-cyrl'
 import type { Messages } from './messages/uz'
+import type { SectionId } from '@/config/site'
 
 export const LOCALES = ['uz', 'uz-cyrl', 'ru', 'en'] as const
 export type Locale = (typeof LOCALES)[number]
@@ -23,7 +24,17 @@ const MESSAGES: Record<Locale, Messages> = { uz, 'uz-cyrl': uzCyrl, ru, en }
 
 export const getMessages = (locale: Locale): Messages => MESSAGES[locale]
 
-export const localePath = (locale: Locale): string => (locale === DEFAULT_LOCALE ? '/' : `/${locale}/`)
+/**
+ * Til bo'yicha sahifa manzili: `localePath('ru')` → `/ru/`, `localePath('ru', 'privacy')` → `/ru/privacy/`.
+ * Standart til prefikssiz: `localePath('uz', 'privacy')` → `/privacy/`.
+ */
+export const localePath = (locale: Locale, page = ''): string => {
+  const prefix = locale === DEFAULT_LOCALE ? '/' : `/${locale}/`
+  return page ? `${prefix}${page}/` : prefix
+}
+
+/** Bosh sahifadagi bo'limga havola — boshqa sahifalardan ham ishlaydi (`/ru/#pricing`). */
+export const sectionHref = (locale: Locale, section: SectionId): string => `${localePath(locale)}#${section}`
 
 export const isLocale = (value: string | undefined): value is Locale =>
   value !== undefined && (LOCALES as readonly string[]).includes(value)

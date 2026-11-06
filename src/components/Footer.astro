@@ -1,12 +1,14 @@
 ---
-import { SITE, SITE_HOST } from '@/config/site'
-import { getMessages, type Locale } from '@/i18n/locales'
+import { SECTIONS, SITE, SITE_HOST } from '@/config/site'
+import { getMessages, sectionHref, type Locale } from '@/i18n/locales'
 
 interface Props {
   locale: Locale
 }
 
-const t = getMessages(Astro.props.locale)
+const { locale } = Astro.props
+const t = getMessages(locale)
+const pricingHref = sectionHref(locale, SECTIONS.pricing)
 const f = t.footer
 const stores = [
   {
@@ -39,7 +41,7 @@ const socials = [
   <div class="wrap">
     <div class="f-grid">
       <div class="f-brand">
-        <a class="brand" href="#top"><svg class="mark" aria-hidden="true"><use href="#zmark"></use></svg>ZUCCO</a>
+        <a class="brand" href={sectionHref(locale, SECTIONS.top)}><svg class="mark" aria-hidden="true"><use href="#zmark"></use></svg>ZUCCO</a>
         <p class="f-tagline">{f.tagline}</p>
       </div>
       <div>
@@ -54,16 +56,16 @@ const socials = [
           return store.href ? (
             <a class="store" href={store.href} target="_blank" rel="noopener">{content}</a>
           ) : (
-            <div class="store" aria-label={`${store.name} — ${f.soon}`}>{content}</div>
+            <div class="store">{content}</div>
           )
         })}
       </div>
       <div>
         <h4>{f.resources}</h4>
         <ul>
-          <li><a href="#imkoniyatlar">{t.nav.features}</a></li>
-          <li><a href="#narxlar">{t.nav.pricing}</a></li>
-          <li><a href="#savollar">{t.nav.faq}</a></li>
+          <li><a href={sectionHref(locale, SECTIONS.features)}>{t.nav.features}</a></li>
+          <li><a href={pricingHref}>{t.nav.pricing}</a></li>
+          <li><a href={sectionHref(locale, SECTIONS.faq)}>{t.nav.faq}</a></li>
           <li><a href={SITE.appUrl} target="_blank" rel="noopener">{f.login}</a></li>
         </ul>
       </div>
@@ -84,15 +86,15 @@ const socials = [
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true" set:html={social.icon}></svg>
               </a>
             ) : (
-              <span class="soon" title={`${social.name} — ${f.soon}`} aria-label={`${social.name} — ${f.soon}`}>
+              <span class="soon" role="img" title={`${social.name} — ${f.soon}`} aria-label={`${social.name} — ${f.soon}`}>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true" set:html={social.icon}></svg>
               </span>
             )
           )}
         </div>
         <div class="f-btns">
-          <a class="btn btn-primary" href="#demo">{t.nav.consult}</a>
-          <a class="btn btn-dark" href="#narxlar">{f.pay}</a>
+          <a class="btn btn-primary" href={sectionHref(locale, SECTIONS.demo)}>{t.nav.consult}</a>
+          <a class="btn btn-dark" href={pricingHref}>{f.pay}</a>
         </div>
       </div>
     </div>

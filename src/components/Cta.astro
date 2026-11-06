@@ -1,5 +1,5 @@
 ---
-import { LEAD_ENDPOINT, LEAD_FORM, PHONE_RULES, SITE } from '@/config/site'
+import { LEAD_ENDPOINT, LEAD_FORM, PHONE_RULES, SECTIONS, SITE } from '@/config/site'
 import { getMessages, type Locale } from '@/i18n/locales'
 
 interface Props {
@@ -27,7 +27,7 @@ const config = {
 ---
 
 <div class="wrap">
-  <div class="cta" id="demo">
+  <div class="cta" id={SECTIONS.demo}>
     <div>
       <h2>{t.title}</h2>
       <p>{t.text}</p>

@@ -1,4 +1,5 @@
 ---
+import { SECTIONS } from '@/config/site'
 import { getMessages, type Locale } from '@/i18n/locales'
 
 interface Props {
@@ -8,7 +9,7 @@ interface Props {
 const t = getMessages(Astro.props.locale).faq
 ---
 
-<section id="savollar">
+<section id={SECTIONS.faq}>
   <div class="wrap">
     <h2>{t.title}</h2>
     <div class="faq">
