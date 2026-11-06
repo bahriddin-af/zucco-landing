@@ -1,13 +1,14 @@
 ---
-import { LEAD_ENDPOINT, LEAD_FORM, PHONE_RULES, SITE } from '@/config/site'
-import { getMessages, type Locale } from '@/i18n/locales'
+import { LEAD_ENDPOINT, LEAD_FORM, LEAD_HTTP_STATUS, PHONE_RULES, SECTIONS, SITE } from '@/config/site'
+import { getMessages, localePath, type Locale } from '@/i18n/locales'
 
 interface Props {
   locale: Locale
 }
 
 const { locale } = Astro.props
-const t = getMessages(locale).cta
+const messages = getMessages(locale)
+const t = messages.cta
 // Skriptga kerakli matn va sozlamalar data-* orqali beriladi (skript bitta, til sahifaga qarab o'zgaradi).
 const config = {
   endpoint: LEAD_ENDPOINT,
@@ -15,59 +16,90 @@ const config = {
   phone: SITE.phone.display,
   phoneRules: PHONE_RULES,
   source: LEAD_FORM.source,
+  status: LEAD_HTTP_STATUS,
   text: {
     sending: t.sending,
     success: t.success,
     errorName: t.errorName,
     errorPhone: t.errorPhone,
     errorSend: t.errorSend,
+    errorValidation: t.errorValidation,
+    errorRateLimit: t.errorRateLimit,
+    errorNetwork: t.errorNetwork,
     offline: t.offline,
   },
 }
 ---
 
 <div class="wrap">
-  <div class="cta" id="demo">
+  <div class="cta" id={SECTIONS.demo}>
     <div>
       <h2>{t.title}</h2>
       <p>{t.text}</p>
     </div>
     <form id="demo-form" novalidate data-config={JSON.stringify(config)}>
       <label class="sr-only" for="f-name">{t.name}</label>
-      <input id="f-name" name="name" autocomplete="name" placeholder={t.name} maxlength={LEAD_FORM.nameMaxLength} />
+      <input id="f-name" name="name" autocomplete="name" placeholder={t.name} maxlength={LEAD_FORM.nameMaxLength} aria-describedby="f-msg" />
       <label class="sr-only" for="f-phone">{t.phone}</label>
-      <input id="f-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder={LEAD_FORM.phonePlaceholder} maxlength={LEAD_FORM.phoneMaxLength} />
+      <input id="f-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder={LEAD_FORM.phonePlaceholder} maxlength={LEAD_FORM.phoneMaxLength} aria-describedby="f-msg" />
+      <!-- Honeypot: odam ko'rmaydi va to'ldirmaydi; bot to'ldirsa server arizani saqlamaydi. -->
+      <div class="hp" aria-hidden="true">
+        <input id="f-website" name={LEAD_FORM.honeypotField} type="text" tabindex="-1" autocomplete="off" />
+      </div>
       <button class="btn btn-light" type="submit">{t.submit}</button>
-      <p class="msg" id="f-msg" role="status" hidden></p>
+      <p class="note">
+        {t.consentBefore}<a href={localePath(locale, LEAD_FORM.consentPage)}>{t.consentLink}</a>{t.consentAfter}
+      </p>
+      <p class="msg" id="f-msg" role="status" aria-live="polite" hidden></p>
     </form>
   </div>
 </div>
 
 <script>
+  type LeadText =
+    | 'sending'
+    | 'success'
+    | 'errorName'
+    | 'errorPhone'
+    | 'errorSend'
+    | 'errorValidation'
+    | 'errorRateLimit'
+    | 'errorNetwork'
+    | 'offline'
+
   interface LeadFormConfig {
     endpoint: string
     locale: string
     phone: string
     phoneRules: { countryCode: string; fullLength: number; localLength: number }
     source: string
-    text: Record<'sending' | 'success' | 'errorName' | 'errorPhone' | 'errorSend' | 'offline', string>
+    status: { badRequest: number; unprocessable: number; tooManyRequests: number; unavailable: number }
+    text: Record<LeadText, string>
   }
 
   const form = document.getElementById('demo-form') as HTMLFormElement | null
   const message = document.getElementById('f-msg')
   const nameInput = document.getElementById('f-name') as HTMLInputElement | null
   const phoneInput = document.getElementById('f-phone') as HTMLInputElement | null
+  const honeypotInput = document.getElementById('f-website') as HTMLInputElement | null
 
-  if (form && message && nameInput && phoneInput) {
+  if (form && message && nameInput && phoneInput && honeypotInput) {
     const config = JSON.parse(form.dataset.config ?? '{}') as LeadFormConfig
     const submitButton = form.querySelector<HTMLButtonElement>('button[type="submit"]')
+    const consent = form.querySelector<HTMLElement>('.note')
     const fill = (template: string, values: Record<string, string>) =>
       template.replace(/\{(\w+)\}/g, (_, key: string) => values[key] ?? '')
+    const withPhone = (key: LeadText) => fill(config.text[key], { phone: config.phone })
 
-    const show = (text: string, isError: boolean) => {
+    /** Xato bo'lsa — darhol o'qiladigan `alert`, aks holda `status`; noto'g'ri maydon `aria-invalid` bilan belgilanadi. */
+    const show = (text: string, isError: boolean, invalidField?: HTMLInputElement) => {
       message.hidden = false
       message.className = isError ? 'msg err' : 'msg'
+      message.setAttribute('role', isError ? 'alert' : 'status')
+      message.setAttribute('aria-live', isError ? 'assertive' : 'polite')
       message.textContent = text
+      ;[nameInput, phoneInput].forEach((input) => input.removeAttribute('aria-invalid'))
+      if (invalidField) invalidField.setAttribute('aria-invalid', 'true')
     }
 
     /** +998 90 123 45 67 / 901234567 → "998901234567"; noto'g'ri bo'lsa null. */
@@ -79,41 +111,61 @@ const config = {
       return null
     }
 
+    /** Server javobi holatiga mos xabar. */
+    const errorFor = (status: number): LeadText => {
+      if (status === config.status.badRequest || status === config.status.unprocessable) return 'errorValidation'
+      if (status === config.status.tooManyRequests) return 'errorRateLimit'
+      if (status === config.status.unavailable) return 'offline'
+      return 'errorSend'
+    }
+
     form.addEventListener('submit', async (event) => {
       event.preventDefault()
       const name = nameInput.value.trim()
       const phone = normalizePhone(phoneInput.value)
       if (!name) {
-        show(config.text.errorName, true)
+        show(config.text.errorName, true, nameInput)
         nameInput.focus()
         return
       }
       if (!phone) {
-        show(config.text.errorPhone, true)
+        show(config.text.errorPhone, true, phoneInput)
         phoneInput.focus()
         return
       }
       if (!config.endpoint) {
-        show(fill(config.text.offline, { phone: config.phone }), true)
+        show(withPhone('offline'), true)
         return
       }
 
       if (submitButton) submitButton.disabled = true
       show(config.text.sending, false)
+      let response: Response
       try {
-        const response = await fetch(config.endpoint, {
+        response = await fetch(config.endpoint, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name, phone: `+${phone}`, language: config.locale, source: config.source }),
+          body: JSON.stringify({
+            name,
+            phone: `+${phone}`,
+            language: config.locale,
+            source: config.source,
+            website: honeypotInput.value,
+          }),
         })
-        if (!response.ok) throw new Error(`HTTP ${response.status}`)
-        show(fill(config.text.success, { name }), false)
-        ;[nameInput, phoneInput, submitButton].forEach((element) => element && (element.hidden = true))
       } catch {
-        show(fill(config.text.errorSend, { phone: config.phone }), true)
-      } finally {
+        show(withPhone('errorNetwork'), true)
         if (submitButton) submitButton.disabled = false
+        return
       }
+
+      if (response.ok) {
+        show(fill(config.text.success, { name }), false)
+        ;[nameInput, phoneInput, submitButton, consent].forEach((element) => element && (element.hidden = true))
+        return
+      }
+      show(withPhone(errorFor(response.status)), true)
+      if (submitButton) submitButton.disabled = false
     })
   }
 </script>

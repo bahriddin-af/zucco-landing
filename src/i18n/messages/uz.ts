@@ -8,6 +8,7 @@ export const uz = {
     title: "Zucco CRM — o'quv markazlari uchun boshqaruv tizimi",
     description:
       "Zucco CRM — o'quv markazlari uchun lidlar, guruhlar, davomat, to'lovlar va hisobotlarni bitta tizimda boshqarish.",
+    ogImageAlt: 'ZUCCO logotipi — Zucco CRM, zucco.uz',
   },
   nav: {
     sections: "Bo'limlar",
@@ -180,6 +181,12 @@ export const uz = {
     errorPhone: "Telefon raqamini to'liq kiriting.",
     errorSend: "Ariza yuborilmadi. Qayta urinib ko'ring yoki qo'ng'iroq qiling: {phone}",
     offline: "Hozircha onlayn ariza qabul qilinmayapti. Qo'ng'iroq qiling: {phone}",
+    errorValidation: "Ma'lumotlar qabul qilinmadi. Ism va telefon raqamini tekshirib, qayta yuboring.",
+    errorRateLimit: "Juda ko'p urinish bo'ldi. Birozdan so'ng qayta urinib ko'ring yoki qo'ng'iroq qiling: {phone}",
+    errorNetwork: "Internet aloqasi yo'q. Ulanishni tekshirib, qayta urinib ko'ring yoki qo'ng'iroq qiling: {phone}",
+    consentBefore: 'Arizani yuborish orqali siz ',
+    consentLink: 'maxfiylik siyosati',
+    consentAfter: 'ga rozilik bildirasiz.',
   },
   footer: {
     tagline: "O'quv markazlari uchun zamonaviy boshqaruv tizimi",
@@ -193,6 +200,25 @@ export const uz = {
     pay: "To'lov qilish",
     legal:
       "Zucco CRM xizmatlari yuridik shaxslar va yakka tartibdagi tadbirkorlar — o'quv markazlari, til maktablari va repetitorlik markazlari uchun mo'ljallangan.",
+  },
+  legal: {
+    documents: 'Hujjatlar',
+    privacy: {
+      title: 'Maxfiylik siyosati',
+      description: "Zucco CRM maxfiylik siyosati: sayt orqali yuborilgan shaxsiy ma'lumotlar bilan ishlash tartibi.",
+    },
+    offer: {
+      title: 'Ommaviy oferta',
+      description: 'Zucco CRM xizmatlaridan foydalanish shartlari (ommaviy oferta).',
+    },
+    pendingTitle: 'Yuridik matn tayyorlanmoqda',
+    pendingText: "Hujjatning rasmiy matni yuridik tasdiqdan so'ng shu sahifada e'lon qilinadi. Savollaringiz bo'lsa, qo'ng'iroq qiling: {phone}",
+    back: 'Bosh sahifaga qaytish',
+  },
+  notFound: {
+    title: 'Sahifa topilmadi',
+    text: "Siz qidirgan sahifa mavjud emas yoki boshqa manzilga ko'chirilgan.",
+    back: 'Bosh sahifaga qaytish',
   },
 }
 

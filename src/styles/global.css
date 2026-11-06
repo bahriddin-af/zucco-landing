@@ -285,3 +285,25 @@ a.store:hover { border-color: #3FC79A; }
 .socials .soon { width: 38px; height: 38px; border-radius: 10px; border: 1px dashed var(--f-line); display: grid; place-items: center; color: var(--f-muted); }
 .socials .soon svg { width: 19px; height: 19px; }
 .nav-mobile-tools .lang { padding: 8px 4px; }
+
+/* Yuridik sahifalar (/privacy, /offer) */
+.legal { padding-block: 120px 96px; display: grid; gap: 28px; justify-items: start; }
+.legal h1 { font-size: clamp(30px, 4vw, 46px); line-height: 1.12; font-weight: 800; }
+.legal-pending { background: var(--surface); border: 1px dashed var(--border); border-radius: 16px; padding: 28px; max-width: 72ch; }
+.legal-pending h2 { font-size: 20px; line-height: 1.3; }
+.legal-pending p { margin: 10px 0 0; color: var(--copy); }
+.f-docs { display: flex; flex-wrap: wrap; gap: 8px 20px; font-size: 13px; }
+.f-docs a { color: var(--f-muted); }
+.f-docs a:hover { color: var(--f-ink); }
+.cta .note { margin: 0; }
+.cta .note a { color: inherit; }
+.hp { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+
+/* 404 sahifasi */
+.not-found { min-height: 100vh; padding-block: 48px; display: grid; align-content: center; gap: 28px; }
+.not-found .brand { justify-self: start; }
+.not-found section { padding: 0; display: grid; gap: 16px; justify-items: start; max-width: 60ch; }
+.not-found section[hidden] { display: none; }
+.not-found h1 { font-size: clamp(30px, 4vw, 46px); line-height: 1.12; font-weight: 800; }
+.not-found p { margin: 0; color: var(--copy); }
+.not-found .not-found-code { font-size: 15px; font-weight: 700; color: var(--primary); letter-spacing: .08em; }

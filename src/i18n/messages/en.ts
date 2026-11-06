@@ -5,6 +5,7 @@ export const en: Messages = {
     title: 'Zucco CRM — management system for learning centers',
     description:
       'Zucco CRM — leads, groups, attendance, payments and reports for your learning center in one system.',
+    ogImageAlt: 'ZUCCO logo — Zucco CRM, zucco.uz',
   },
   nav: {
     sections: 'Sections',
@@ -171,6 +172,12 @@ export const en: Messages = {
     errorPhone: 'Please enter your full phone number.',
     errorSend: "Your request wasn't sent. Try again or call us: {phone}",
     offline: "We aren't accepting online requests yet. Please call: {phone}",
+    errorValidation: 'Your details were not accepted. Check your name and phone number and try again.',
+    errorRateLimit: 'Too many attempts. Please try again shortly or call us: {phone}',
+    errorNetwork: 'No internet connection. Check your connection and try again, or call us: {phone}',
+    consentBefore: 'By submitting, you agree to our ',
+    consentLink: 'privacy policy',
+    consentAfter: '.',
   },
   footer: {
     tagline: 'A modern management system for learning centers',
@@ -184,5 +191,24 @@ export const en: Messages = {
     pay: 'Make a payment',
     legal:
       'Zucco CRM services are intended for legal entities and sole proprietors — learning centers, language schools and tutoring centers.',
+  },
+  legal: {
+    documents: 'Documents',
+    privacy: {
+      title: 'Privacy policy',
+      description: 'Zucco CRM privacy policy: how personal data submitted through this website is handled.',
+    },
+    offer: {
+      title: 'Public offer',
+      description: 'Terms of use of Zucco CRM services (public offer).',
+    },
+    pendingTitle: 'Legal text in preparation',
+    pendingText: 'The official text of this document will be published on this page after legal review. If you have questions, call us: {phone}',
+    back: 'Back to home page',
+  },
+  notFound: {
+    title: 'Page not found',
+    text: "The page you're looking for doesn't exist or has been moved.",
+    back: 'Back to home page',
   },
 }

@@ -1,5 +1,5 @@
 ---
-import { SITE } from '@/config/site'
+import { SECTIONS, SITE } from '@/config/site'
 import { PLAN_PRICES, formatPrice } from '@/config/pricing'
 import { getMessages, type Locale } from '@/i18n/locales'
 
@@ -15,7 +15,7 @@ const paidPlans = [
 ] as const
 ---
 
-<section id="narxlar">
+<section id={SECTIONS.pricing}>
   <div class="wrap">
     <div class="plans-head">
       <h2>{t.title}</h2>
@@ -36,7 +36,7 @@ const paidPlans = [
               <b data-monthly={formatPrice(prices.monthly, locale)} data-yearly={formatPrice(prices.yearly, locale)}>{formatPrice(prices.monthly, locale)}</b>
               <span>{t.perMonth}<br /><span class="period">{t.periodMonthly}</span></span>
             </div>
-            <a class="btn" href="#demo">{plan.cta}</a>
+            <a class="btn" href={`#${SECTIONS.demo}`}>{plan.cta}</a>
             <p class="fine">{t.fine}</p>
           </div>
           <ul>

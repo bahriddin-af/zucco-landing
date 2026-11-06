@@ -25,8 +25,28 @@ export const SITE = {
     googlePlay: null as string | null,
     appStore: null as string | null,
   },
-  copyrightYear: 2026,
+  /** Build vaqtidagi yil — har yili qo'lda yangilash shart emas. */
+  copyrightYear: new Date().getFullYear(),
 } as const
+
+/**
+ * Bo'lim anchorlari (`id`). Barcha tillarda bir xil; Header, Footer va bo'lim komponentlari
+ * faqat shu yerdan oladi.
+ */
+export const SECTIONS = {
+  top: 'top',
+  features: 'features',
+  support: 'support',
+  pricing: 'pricing',
+  faq: 'faq',
+  demo: 'demo',
+} as const
+
+import type { LegalPage } from './pages'
+
+export { LEGAL_PAGES, PENDING_LEGAL_PAGES, type LegalPage } from './pages'
+
+export type SectionId = (typeof SECTIONS)[keyof typeof SECTIONS]
 
 /** Saytda ko'rinadigan domen (zucco.uz) — SITE.url dan olinadi. */
 export const SITE_HOST = new URL(SITE.url).host
@@ -38,6 +58,25 @@ export const SITE_HOST = new URL(SITE.url).host
  */
 export const THEME_COLOR = '#F1F6FB'
 
+/** Ikonkalar va manifest (public/ dagi PNG'lar `node scripts/generate-images.mjs` bilan yaratiladi). */
+export const ICONS = {
+  svg: '/favicon.svg',
+  png32: '/favicon-32.png',
+  appleTouch: '/apple-touch-icon.png',
+  manifest: '/site.webmanifest',
+  manifestIcons: [
+    { src: '/icon-192.png', size: 192 },
+    { src: '/icon-512.png', size: 512 },
+  ],
+} as const
+
+/** Ijtimoiy tarmoqlarda ulashilganda chiqadigan rasm (og:image / twitter:image). */
+export const OG_IMAGE = {
+  path: '/og-image.png',
+  width: 1200,
+  height: 630,
+} as const
+
 /** Google Fonts: shrift va preconnect manzillari. */
 export const FONTS = {
   preconnect: [
@@ -47,16 +86,50 @@ export const FONTS = {
   stylesheet: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap',
 } as const
 
-/** Konsultatsiya formasi: maydon uzunliklari va ariza manbasi. */
+/** Konsultatsiya formasi: maydon uzunliklari, ariza manbasi va himoya sozlamalari. */
 export const LEAD_FORM = {
   nameMaxLength: 100,
   phoneMaxLength: 20,
   phonePlaceholder: '+998 90 123 45 67',
   source: 'landing',
+  /** Botlar uchun yashirin maydon nomi — backend shu maydon to'ldirilgan arizani saqlamaydi. */
+  honeypotField: 'website',
+  /** Rozilik matnidagi havola ochadigan sahifa. */
+  consentPage: 'privacy' satisfies LegalPage,
+} as const
+
+/** Ariza endpointi qaytaradigan, alohida xabar ko'rsatiladigan HTTP holatlari. */
+export const LEAD_HTTP_STATUS = {
+  badRequest: 400,
+  /** Backend maydon validatsiyasi (`invalid_field`) uchun 422 qaytaradi. */
+  unprocessable: 422,
+  tooManyRequests: 429,
+  unavailable: 503,
 } as const
 
 /** Konsultatsiya arizasi yuboriladigan manzil (.env: PUBLIC_LEAD_ENDPOINT). Bo'sh bo'lsa forma o'chiq. */
 export const LEAD_ENDPOINT: string = import.meta.env.PUBLIC_LEAD_ENDPOINT ?? ''
+
+/**
+ * "website-id=abc;domain=zucco.uz" → { "website-id": "abc", domain: "zucco.uz" }.
+ * Kalit faqat harf, raqam va chiziqchadan iborat bo'lishi mumkin; noto'g'ri juftliklar tashlab yuboriladi.
+ */
+const parseDataAttributes = (raw: string): Record<string, string> =>
+  Object.fromEntries(
+    raw
+      .split(';')
+      .map((pair) => pair.split('=').map((part) => part.trim()))
+      .filter((parts): parts is [string, string] => parts.length === 2 && /^[a-z0-9-]+$/i.test(parts[0]) && parts[1] !== ''),
+  )
+
+/**
+ * Analitika (ixtiyoriy, .env): PUBLIC_ANALYTICS_SRC — skript manzili, PUBLIC_ANALYTICS_DATA — data-* atributlar.
+ * SRC bo'sh bo'lsa skript umuman yuklanmaydi. Provayder tanlash — biznes qarori.
+ */
+export const ANALYTICS = {
+  src: (import.meta.env.PUBLIC_ANALYTICS_SRC ?? '') as string,
+  data: parseDataAttributes(import.meta.env.PUBLIC_ANALYTICS_DATA ?? ''),
+} as const
 
 /** Telefon raqami tekshiruvi: +998XXXXXXXXX yoki 9 xonali mahalliy raqam. */
 export const PHONE_RULES = {

@@ -1,5 +1,5 @@
 ---
-import { SITE } from '@/config/site'
+import { SECTIONS, SITE } from '@/config/site'
 import { getMessages, type Locale } from '@/i18n/locales'
 
 interface Props {
@@ -26,7 +26,7 @@ const MONTH_X = [50, 188, 326, 468]
     <h1>{t.title}</h1>
     <p class="lead">{t.lead}</p>
     <div class="ctas">
-      <a class="btn btn-hero" href="#demo">{t.primaryCta}</a>
+      <a class="btn btn-hero" href={`#${SECTIONS.demo}`}>{t.primaryCta}</a>
       <a class="btn btn-outline" href={SITE.phone.href}><svg aria-hidden="true"><use href="#phone"></use></svg>{t.salesCta}</a>
     </div>
 

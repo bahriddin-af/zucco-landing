@@ -1,0 +1,34 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro'
+import Footer from '@/components/Footer.astro'
+import Header from '@/components/Header.astro'
+import Sprite from '@/components/Sprite.astro'
+import { PENDING_LEGAL_PAGES, SECTIONS, SITE, type LegalPage as LegalSlug } from '@/config/site'
+import { getMessages, sectionHref, type Locale } from '@/i18n/locales'
+
+interface Props {
+  locale: Locale
+  slug: LegalSlug
+}
+
+const { locale, slug } = Astro.props
+const t = getMessages(locale).legal
+const doc = t[slug]
+const pendingText = t.pendingText.replace('{phone}', SITE.phone.display)
+const isPending = PENDING_LEGAL_PAGES.includes(slug)
+---
+
+<!-- Yuridik matn hali tasdiqlanmagan: sahifa indekslanmaydi, faqat "tayyorlanmoqda" bloki ko'rsatiladi. -->
+<BaseLayout locale={locale} page={slug} title={doc.title} description={doc.description} noindex={isPending}>
+  <Sprite />
+  <Header locale={locale} page={slug} />
+  <main id={SECTIONS.top} class="wrap legal">
+    <h1>{doc.title}</h1>
+    <div class="legal-pending" role="note">
+      <h2>{t.pendingTitle}</h2>
+      <p>{pendingText}</p>
+    </div>
+    <a class="btn btn-primary" href={sectionHref(locale, SECTIONS.top)}>{t.back}</a>
+  </main>
+  <Footer locale={locale} />
+</BaseLayout>

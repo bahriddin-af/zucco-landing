@@ -1,0 +1,42 @@
+# Har push va PR'da landing'ni yig'adi (astro check + build) va dist/ ni artifact qilib saqlaydi.
+# Deploy qadami ataylab yo'q: hosting (Vercel / Cloudflare Pages / nginx) hali tanlanmagan.
+name: build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      # Repo Settings → Variables: PUBLIC_LEAD_ENDPOINT (bo'sh bo'lsa forma telefon raqamini ko'rsatadi).
+      PUBLIC_LEAD_ENDPOINT: ${{ vars.PUBLIC_LEAD_ENDPOINT }}
+      # Ixtiyoriy analitika (bo'sh bo'lsa skript yuklanmaydi).
+      PUBLIC_ANALYTICS_SRC: ${{ vars.PUBLIC_ANALYTICS_SRC }}
+      PUBLIC_ANALYTICS_DATA: ${{ vars.PUBLIC_ANALYTICS_DATA }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: zucco-landing-dist
+          path: dist/
+          retention-days: 14
