@@ -32,6 +32,8 @@ export const ru: Messages = {
     paymentsTitle: 'Все оплаты',
     payments: 'Оплаты: 48 600 000 сум',
     profit: 'Чистая прибыль: 21 400 000 сум',
+    period: '01.11.2026 — 30.11.2026',
+    demoUrl: 'vash-centr.zucco.uz',
   },
   features: {
     title: 'Забудьте о бумагах и Excel',

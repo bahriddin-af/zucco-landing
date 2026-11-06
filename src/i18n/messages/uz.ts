@@ -35,6 +35,8 @@ export const uz = {
     paymentsTitle: "Barcha to'lovlar",
     payments: "To'lovlar: 48 600 000 so'm",
     profit: "Sof foyda: 21 400 000 so'm",
+    period: '01.11.2026 — 30.11.2026',
+    demoUrl: 'markazingiz.zucco.uz',
   },
   features: {
     title: "Qog'oz va Excel'ni unuting",

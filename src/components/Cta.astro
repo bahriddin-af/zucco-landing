@@ -1,5 +1,5 @@
 ---
-import { LEAD_ENDPOINT, PHONE_RULES, SITE } from '@/config/site'
+import { LEAD_ENDPOINT, LEAD_FORM, PHONE_RULES, SITE } from '@/config/site'
 import { getMessages, type Locale } from '@/i18n/locales'
 
 interface Props {
@@ -14,6 +14,7 @@ const config = {
   locale,
   phone: SITE.phone.display,
   phoneRules: PHONE_RULES,
+  source: LEAD_FORM.source,
   text: {
     sending: t.sending,
     success: t.success,
@@ -33,9 +34,9 @@ const config = {
     </div>
     <form id="demo-form" novalidate data-config={JSON.stringify(config)}>
       <label class="sr-only" for="f-name">{t.name}</label>
-      <input id="f-name" name="name" autocomplete="name" placeholder={t.name} maxlength="100" />
+      <input id="f-name" name="name" autocomplete="name" placeholder={t.name} maxlength={LEAD_FORM.nameMaxLength} />
       <label class="sr-only" for="f-phone">{t.phone}</label>
-      <input id="f-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+998 90 123 45 67" maxlength="20" />
+      <input id="f-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder={LEAD_FORM.phonePlaceholder} maxlength={LEAD_FORM.phoneMaxLength} />
       <button class="btn btn-light" type="submit">{t.submit}</button>
       <p class="msg" id="f-msg" role="status" hidden></p>
     </form>
@@ -48,6 +49,7 @@ const config = {
     locale: string
     phone: string
     phoneRules: { countryCode: string; fullLength: number; localLength: number }
+    source: string
     text: Record<'sending' | 'success' | 'errorName' | 'errorPhone' | 'errorSend' | 'offline', string>
   }
 
@@ -102,7 +104,7 @@ const config = {
         const response = await fetch(config.endpoint, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name, phone: `+${phone}`, language: config.locale, source: 'landing' }),
+          body: JSON.stringify({ name, phone: `+${phone}`, language: config.locale, source: config.source }),
         })
         if (!response.ok) throw new Error(`HTTP ${response.status}`)
         show(fill(config.text.success, { name }), false)

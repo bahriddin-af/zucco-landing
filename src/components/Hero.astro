@@ -32,7 +32,7 @@ const MONTH_X = [50, 188, 326, 468]
 
     <div class="stage" role="img" aria-label={t.mockLabel}>
       <div class="browser" aria-hidden="true">
-        <div class="chrome"><span class="dots"><i></i><i></i><i></i></span><span class="url">markazingiz.zucco.uz</span><span class="sample">{t.sample}</span></div>
+        <div class="chrome"><span class="dots"><i></i><i></i><i></i></span><span class="url">{t.demoUrl}</span><span class="sample">{t.sample}</span></div>
         <div class="app">
           <aside class="rail">
             <svg class="mark"><use href="#zmark"></use></svg>
@@ -65,8 +65,8 @@ const MONTH_X = [50, 188, 326, 468]
       </div>
       <div class="float" aria-hidden="true">
         <h4>{t.paymentsTitle}</h4>
-        <div class="pay"><b>{t.payments}</b><small>01.11.2026 — 30.11.2026</small></div>
-        <div class="pay"><b>{t.profit}</b><small>01.11.2026 — 30.11.2026</small></div>
+        <div class="pay"><b>{t.payments}</b><small>{t.period}</small></div>
+        <div class="pay"><b>{t.profit}</b><small>{t.period}</small></div>
       </div>
     </div>
   </div>

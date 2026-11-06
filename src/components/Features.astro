@@ -6,13 +6,13 @@ interface Props {
 }
 
 const t = getMessages(Astro.props.locale).features
-// Kartalardagi namuna ismlar va grafik balandliklari (foiz).
+// Kartalardagi namuna ismlar. Grafik ustunlari balandligi global.css dagi `.bars i:nth-child(n)` da.
 const LEAD_NAMES = ['Dilnoza R.', 'Jasur K.', 'Bekzod U.']
 const ATTENDANCE_ROWS = [
   { name: 'Madina Karimova', status: 0 },
   { name: 'Aziz Toshmatov', status: 1 },
 ]
-const BAR_HEIGHTS = [40, 55, 48, 70, 62, 88]
+const BAR_COUNT = 6
 ---
 
 <section id="imkoniyatlar">
@@ -48,7 +48,7 @@ const BAR_HEIGHTS = [40, 55, 48, 70, 62, 88]
         <h3>{t.finance.title}</h3>
         <p>{t.finance.text}</p>
         <div class="illu" aria-hidden="true">
-          <div class="bars">{BAR_HEIGHTS.map((height) => <i style={`height:${height}%`}></i>)}</div>
+          <div class="bars">{Array.from({ length: BAR_COUNT }, () => <i></i>)}</div>
         </div>
       </article>
       <article class="card">

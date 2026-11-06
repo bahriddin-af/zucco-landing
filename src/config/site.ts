@@ -3,6 +3,7 @@
  * Komponentlar raqam yoki havolani o'zi yozmaydi — faqat SITE dan oladi (RULES §2).
  */
 export const SITE = {
+  name: 'Zucco CRM',
   url: 'https://zucco.uz',
   appUrl: 'https://app.zucco.uz',
   phone: {
@@ -23,6 +24,33 @@ export const SITE = {
     appStore: null as string | null,
   },
   copyrightYear: 2026,
+} as const
+
+/** Saytda ko'rinadigan domen (zucco.uz) — SITE.url dan olinadi. */
+export const SITE_HOST = new URL(SITE.url).host
+
+/**
+ * Mobil brauzer paneli rangi (`<meta name="theme-color">`).
+ * Meta tegda CSS o'zgaruvchisi ishlamaydi, shuning uchun qiymat shu yerda —
+ * `global.css` dagi `--canvas` bilan bir xil bo'lishi shart.
+ */
+export const THEME_COLOR = '#F1F6FB'
+
+/** Google Fonts: shrift va preconnect manzillari. */
+export const FONTS = {
+  preconnect: [
+    { href: 'https://fonts.googleapis.com', crossorigin: false },
+    { href: 'https://fonts.gstatic.com', crossorigin: true },
+  ],
+  stylesheet: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap',
+} as const
+
+/** Konsultatsiya formasi: maydon uzunliklari va ariza manbasi. */
+export const LEAD_FORM = {
+  nameMaxLength: 100,
+  phoneMaxLength: 20,
+  phonePlaceholder: '+998 90 123 45 67',
+  source: 'landing',
 } as const
 
 /** Konsultatsiya arizasi yuboriladigan manzil (.env: PUBLIC_LEAD_ENDPOINT). Bo'sh bo'lsa forma o'chiq. */

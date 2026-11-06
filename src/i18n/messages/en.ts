@@ -32,6 +32,8 @@ export const en: Messages = {
     paymentsTitle: 'All payments',
     payments: 'Payments: 48,600,000 UZS',
     profit: 'Net profit: 21,400,000 UZS',
+    period: '01.11.2026 — 30.11.2026',
+    demoUrl: 'your-center.zucco.uz',
   },
   features: {
     title: 'Forget paper and Excel',

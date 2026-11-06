@@ -1,5 +1,5 @@
 ---
-import { SITE } from '@/config/site'
+import { SITE, SITE_HOST } from '@/config/site'
 import { getMessages, type Locale } from '@/i18n/locales'
 
 interface Props {
@@ -72,7 +72,7 @@ const socials = [
         <ul>
           <li><a href={SITE.phone.href}>{SITE.phone.display}</a></li>
           <li><a href={SITE.telegram.href} target="_blank" rel="noopener">Telegram: {SITE.telegram.handle}</a></li>
-          <li><a href={SITE.url}>zucco.uz</a></li>
+          <li><a href={SITE.url}>{SITE_HOST}</a></li>
         </ul>
       </div>
       <div class="f-cta">
@@ -97,7 +97,7 @@ const socials = [
       </div>
     </div>
     <div class="f-bottom">
-      <p>Copyright © {SITE.copyrightYear} <b>Zucco CRM</b></p>
+      <p>© {SITE.copyrightYear} <b>{SITE.name}</b></p>
       <p>{f.legal}</p>
     </div>
   </div>

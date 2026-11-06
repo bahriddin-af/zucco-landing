@@ -32,6 +32,8 @@ export const uzCyrl: Messages = {
     paymentsTitle: 'Барча тўловлар',
     payments: 'Тўловлар: 48 600 000 сўм',
     profit: 'Соф фойда: 21 400 000 сўм',
+    period: '01.11.2026 — 30.11.2026',
+    demoUrl: 'markazingiz.zucco.uz',
   },
   features: {
     title: 'Қоғоз ва Excel’ни унутинг',
