@@ -194,6 +194,20 @@ export const uz = {
     legal:
       "Zucco CRM xizmatlari yuridik shaxslar va yakka tartibdagi tadbirkorlar — o'quv markazlari, til maktablari va repetitorlik markazlari uchun mo'ljallangan.",
   },
+  legal: {
+    documents: 'Hujjatlar',
+    privacy: {
+      title: 'Maxfiylik siyosati',
+      description: "Zucco CRM maxfiylik siyosati: sayt orqali yuborilgan shaxsiy ma'lumotlar bilan ishlash tartibi.",
+    },
+    offer: {
+      title: 'Ommaviy oferta',
+      description: 'Zucco CRM xizmatlaridan foydalanish shartlari (ommaviy oferta).',
+    },
+    pendingTitle: 'Yuridik matn tayyorlanmoqda',
+    pendingText: "Hujjatning rasmiy matni yuridik tasdiqdan so'ng shu sahifada e'lon qilinadi. Savollaringiz bo'lsa, qo'ng'iroq qiling: {phone}",
+    back: 'Bosh sahifaga qaytish',
+  },
 }
 
 export type Messages = typeof uz

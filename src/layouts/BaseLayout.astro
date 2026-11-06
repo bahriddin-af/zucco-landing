@@ -5,12 +5,22 @@ import { LOCALES, LOCALE_META, DEFAULT_LOCALE, getMessages, localePath, type Loc
 
 interface Props {
   locale: Locale
+  /** Sahifa slug'i (bosh sahifa uchun bo'sh) — canonical va hreflang shundan yasaladi. */
+  page?: string
+  /** Sahifa sarlavhasi; berilmasa bosh sahifa matnlari ishlatiladi. */
+  title?: string
+  description?: string
+  /** Qidiruv tizimlari indekslamasin (masalan, matni hali tayyor bo'lmagan sahifa). */
+  noindex?: boolean
 }
 
-const { locale } = Astro.props
+const { locale, page = '', title, description, noindex = false } = Astro.props
 const t = getMessages(locale)
 const meta = LOCALE_META[locale]
-const canonical = new URL(localePath(locale), SITE.url).href
+const canonical = new URL(localePath(locale, page), SITE.url).href
+const tabTitle = title ? `${title} — ${SITE.tabTitle}` : SITE.tabTitle
+const ogTitle = title ?? t.meta.title
+const metaDescription = description ?? t.meta.description
 ---
 
 <!doctype html>
@@ -18,18 +28,19 @@ const canonical = new URL(localePath(locale), SITE.url).href
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <title>{SITE.tabTitle}</title>
-    <meta name="description" content={t.meta.description} />
+    <title>{tabTitle}</title>
+    <meta name="description" content={metaDescription} />
+    {noindex && <meta name="robots" content="noindex" />}
     <meta name="theme-color" content={THEME_COLOR} />
     <link rel="canonical" href={canonical} />
-    {LOCALES.map((code) => <link rel="alternate" hreflang={LOCALE_META[code].htmlLang} href={new URL(localePath(code), SITE.url).href} />)}
-    <link rel="alternate" hreflang="x-default" href={new URL(localePath(DEFAULT_LOCALE), SITE.url).href} />
+    {LOCALES.map((code) => <link rel="alternate" hreflang={LOCALE_META[code].htmlLang} href={new URL(localePath(code, page), SITE.url).href} />)}
+    <link rel="alternate" hreflang="x-default" href={new URL(localePath(DEFAULT_LOCALE, page), SITE.url).href} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={SITE.name} />
-    <meta property="og:title" content={t.meta.title} />
-    <meta property="og:description" content={t.meta.description} />
+    <meta property="og:title" content={ogTitle} />
+    <meta property="og:description" content={metaDescription} />
     <meta property="og:url" content={canonical} />
     <meta property="og:locale" content={meta.ogLocale} />
 

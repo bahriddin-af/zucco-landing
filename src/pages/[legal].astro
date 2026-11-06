@@ -1,0 +1,12 @@
+---
+import type { GetStaticPaths } from 'astro'
+import LegalPage from '@/components/LegalPage.astro'
+import { LEGAL_PAGES } from '@/config/site'
+import { DEFAULT_LOCALE } from '@/i18n/locales'
+
+export const getStaticPaths = (() => LEGAL_PAGES.map((legal) => ({ params: { legal }, props: { slug: legal } }))) satisfies GetStaticPaths
+
+const { slug } = Astro.props
+---
+
+<LegalPage locale={DEFAULT_LOCALE} slug={slug} />

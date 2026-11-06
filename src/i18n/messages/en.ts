@@ -185,4 +185,18 @@ export const en: Messages = {
     legal:
       'Zucco CRM services are intended for legal entities and sole proprietors — learning centers, language schools and tutoring centers.',
   },
+  legal: {
+    documents: 'Documents',
+    privacy: {
+      title: 'Privacy policy',
+      description: 'Zucco CRM privacy policy: how personal data submitted through this website is handled.',
+    },
+    offer: {
+      title: 'Public offer',
+      description: 'Terms of use of Zucco CRM services (public offer).',
+    },
+    pendingTitle: 'Legal text in preparation',
+    pendingText: 'The official text of this document will be published on this page after legal review. If you have questions, call us: {phone}',
+    back: 'Back to home page',
+  },
 }

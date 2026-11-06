@@ -42,6 +42,8 @@ export const SECTIONS = {
   demo: 'demo',
 } as const
 
+export { LEGAL_PAGES, PENDING_LEGAL_PAGES, type LegalPage } from './pages'
+
 export type SectionId = (typeof SECTIONS)[keyof typeof SECTIONS]
 
 /** Saytda ko'rinadigan domen (zucco.uz) — SITE.url dan olinadi. */

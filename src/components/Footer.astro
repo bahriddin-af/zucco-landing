@@ -1,6 +1,6 @@
 ---
-import { SECTIONS, SITE, SITE_HOST } from '@/config/site'
-import { getMessages, sectionHref, type Locale } from '@/i18n/locales'
+import { LEGAL_PAGES, SECTIONS, SITE, SITE_HOST } from '@/config/site'
+import { getMessages, localePath, sectionHref, type Locale } from '@/i18n/locales'
 
 interface Props {
   locale: Locale
@@ -101,6 +101,9 @@ const socials = [
     <div class="f-bottom">
       <p>© {SITE.copyrightYear} <b>{SITE.name}</b></p>
       <p>{f.legal}</p>
+      <nav class="f-docs" aria-label={t.legal.documents}>
+        {LEGAL_PAGES.map((slug) => <a href={localePath(locale, slug)}>{t.legal[slug].title}</a>)}
+      </nav>
     </div>
   </div>
 </footer>
