@@ -215,6 +215,11 @@ export const uz = {
     pendingText: "Hujjatning rasmiy matni yuridik tasdiqdan so'ng shu sahifada e'lon qilinadi. Savollaringiz bo'lsa, qo'ng'iroq qiling: {phone}",
     back: 'Bosh sahifaga qaytish',
   },
+  notFound: {
+    title: 'Sahifa topilmadi',
+    text: "Siz qidirgan sahifa mavjud emas yoki boshqa manzilga ko'chirilgan.",
+    back: 'Bosh sahifaga qaytish',
+  },
 }
 
 export type Messages = typeof uz

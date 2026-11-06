@@ -298,3 +298,12 @@ a.store:hover { border-color: #3FC79A; }
 .cta .note { margin: 0; }
 .cta .note a { color: inherit; }
 .hp { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+
+/* 404 sahifasi */
+.not-found { min-height: 100vh; padding-block: 48px; display: grid; align-content: center; gap: 28px; }
+.not-found .brand { justify-self: start; }
+.not-found section { padding: 0; display: grid; gap: 16px; justify-items: start; max-width: 60ch; }
+.not-found section[hidden] { display: none; }
+.not-found h1 { font-size: clamp(30px, 4vw, 46px); line-height: 1.12; font-weight: 800; }
+.not-found p { margin: 0; color: var(--copy); }
+.not-found .not-found-code { font-size: 15px; font-weight: 700; color: var(--primary); letter-spacing: .08em; }

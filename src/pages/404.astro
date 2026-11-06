@@ -1,0 +1,43 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro'
+import Sprite from '@/components/Sprite.astro'
+import { SECTIONS } from '@/config/site'
+import { DEFAULT_LOCALE, LOCALES, LOCALE_META, getMessages, sectionHref } from '@/i18n/locales'
+
+// Statik hostingda 404.html bitta fayl: barcha tillar bloki yoziladi, skript manzil prefiksiga
+// (/ru/..., /en/...) qarab mos tilni ko'rsatadi. Skriptsiz standart til ko'rinadi.
+const t = getMessages(DEFAULT_LOCALE).notFound
+---
+
+<BaseLayout locale={DEFAULT_LOCALE} title={t.title} noindex alternates={false}>
+  <Sprite />
+  <main id={SECTIONS.top} class="wrap not-found" data-locales={JSON.stringify(LOCALES)} data-default-locale={DEFAULT_LOCALE}>
+    <a class="brand" href={sectionHref(DEFAULT_LOCALE, SECTIONS.top)}><svg class="mark" aria-hidden="true"><use href="#zmark"></use></svg>ZUCCO</a>
+    {LOCALES.map((code) => {
+      const text = getMessages(code).notFound
+      return (
+        <section data-locale={code} lang={LOCALE_META[code].htmlLang} hidden={code !== DEFAULT_LOCALE}>
+          <p class="not-found-code" aria-hidden="true">404</p>
+          <h1>{text.title}</h1>
+          <p>{text.text}</p>
+          <a class="btn btn-primary" href={sectionHref(code, SECTIONS.top)}>{text.back}</a>
+        </section>
+      )
+    })}
+  </main>
+</BaseLayout>
+
+<script>
+  const main = document.querySelector<HTMLElement>('[data-locales]')
+  if (main) {
+    const locales = JSON.parse(main.dataset.locales ?? '[]') as string[]
+    const firstSegment = window.location.pathname.split('/')[1] ?? ''
+    const locale = locales.includes(firstSegment) ? firstSegment : main.dataset.defaultLocale
+    const sections = main.querySelectorAll<HTMLElement>('[data-locale]')
+    sections.forEach((section) => (section.hidden = section.dataset.locale !== locale))
+    const active = main.querySelector<HTMLElement>(`[data-locale="${locale}"]`)
+    if (active?.lang) document.documentElement.lang = active.lang
+    const title = active?.querySelector('h1')?.textContent
+    if (title) document.title = `${title} — ${document.title.split(' — ').pop()}`
+  }
+</script>

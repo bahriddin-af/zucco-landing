@@ -206,4 +206,9 @@ export const en: Messages = {
     pendingText: 'The official text of this document will be published on this page after legal review. If you have questions, call us: {phone}',
     back: 'Back to home page',
   },
+  notFound: {
+    title: 'Page not found',
+    text: "The page you're looking for doesn't exist or has been moved.",
+    back: 'Back to home page',
+  },
 }

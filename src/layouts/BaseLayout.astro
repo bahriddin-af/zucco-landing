@@ -12,9 +12,11 @@ interface Props {
   description?: string
   /** Qidiruv tizimlari indekslamasin (masalan, matni hali tayyor bo'lmagan sahifa). */
   noindex?: boolean
+  /** canonical, hreflang va og:url chiqarilsinmi (404 kabi manzili yo'q sahifada — yo'q). */
+  alternates?: boolean
 }
 
-const { locale, page = '', title, description, noindex = false } = Astro.props
+const { locale, page = '', title, description, noindex = false, alternates = true } = Astro.props
 const t = getMessages(locale)
 const meta = LOCALE_META[locale]
 const canonical = new URL(localePath(locale, page), SITE.url).href
@@ -33,9 +35,9 @@ const ogImageUrl = new URL(OG_IMAGE.path, SITE.url).href
     <meta name="description" content={metaDescription} />
     {noindex && <meta name="robots" content="noindex" />}
     <meta name="theme-color" content={THEME_COLOR} />
-    <link rel="canonical" href={canonical} />
-    {LOCALES.map((code) => <link rel="alternate" hreflang={LOCALE_META[code].htmlLang} href={new URL(localePath(code, page), SITE.url).href} />)}
-    <link rel="alternate" hreflang="x-default" href={new URL(localePath(DEFAULT_LOCALE, page), SITE.url).href} />
+    {alternates && <link rel="canonical" href={canonical} />}
+    {alternates && LOCALES.map((code) => <link rel="alternate" hreflang={LOCALE_META[code].htmlLang} href={new URL(localePath(code, page), SITE.url).href} />)}
+    {alternates && <link rel="alternate" hreflang="x-default" href={new URL(localePath(DEFAULT_LOCALE, page), SITE.url).href} />}
     <link rel="icon" type="image/svg+xml" href={ICONS.svg} />
     <link rel="icon" type="image/png" sizes="32x32" href={ICONS.png32} />
     <link rel="apple-touch-icon" href={ICONS.appleTouch} />
@@ -45,7 +47,7 @@ const ogImageUrl = new URL(OG_IMAGE.path, SITE.url).href
     <meta property="og:site_name" content={SITE.name} />
     <meta property="og:title" content={ogTitle} />
     <meta property="og:description" content={metaDescription} />
-    <meta property="og:url" content={canonical} />
+    {alternates && <meta property="og:url" content={canonical} />}
     <meta property="og:locale" content={meta.ogLocale} />
     <meta property="og:image" content={ogImageUrl} />
     <meta property="og:image:width" content={String(OG_IMAGE.width)} />
